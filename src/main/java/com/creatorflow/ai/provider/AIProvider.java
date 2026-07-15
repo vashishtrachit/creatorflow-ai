@@ -1,7 +1,9 @@
 package com.creatorflow.ai.provider;
 
+import com.creatorflow.content.dto.ContentPackageResponse;
+
 public interface AIProvider {
 
-    String generateStory(String topic);
+    ContentPackageResponse generateContent(String topic);
 
 }

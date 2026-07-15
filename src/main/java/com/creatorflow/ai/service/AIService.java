@@ -1,7 +1,7 @@
 package com.creatorflow.ai.service;
 
-import com.creatorflow.ai.dto.StoryResponse;
 import com.creatorflow.ai.provider.AIProvider;
+import com.creatorflow.content.dto.ContentPackageResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +13,9 @@ public class AIService {
         this.aiProvider = aiProvider;
     }
 
-    public StoryResponse generateStory(String topic) {
+    public ContentPackageResponse generateContent(String topic) {
 
-        String story = aiProvider.generateStory(topic);
+        return aiProvider.generateContent(topic);
 
-        return new StoryResponse(story);
     }
 }

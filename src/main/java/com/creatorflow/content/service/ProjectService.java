@@ -1,7 +1,8 @@
 package com.creatorflow.content.service;
 
-import com.creatorflow.ai.dto.StoryResponse;
+
 import com.creatorflow.ai.service.AIService;
+import com.creatorflow.content.dto.ContentPackageResponse;
 import com.creatorflow.content.dto.CreateProjectRequest;
 import com.creatorflow.content.dto.CreateProjectResponse;
 import com.creatorflow.content.model.Project;
@@ -31,8 +32,8 @@ public class ProjectService {
 
         Long id = COUNTER.incrementAndGet();
 
-        StoryResponse storyResponse =
-                aiService.generateStory(request.topic());
+        ContentPackageResponse content =
+                aiService.generateContent(request.topic());
 
         Project project = new Project(
                 id,
@@ -46,7 +47,7 @@ public class ProjectService {
                 id,
                 request.topic(),
                 ProjectStatus.CREATED.name(),
-                storyResponse.story()
+                content.story()
         );
     }
 
