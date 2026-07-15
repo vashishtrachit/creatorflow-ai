@@ -9,13 +9,13 @@ public class ContentPromptBuilder {
 
         return """
                 You are an expert YouTube kids content creator.
-
+                
                 Generate ORIGINAL content.
-
+                
                 Return ONLY valid JSON.
-
+                
                 JSON format:
-
+                
                 {
                   "title":"",
                   "story":"",
@@ -30,9 +30,9 @@ public class ContentPromptBuilder {
                     }
                   ]
                 }
-
+                
                 Requirements:
-
+                
                 - Story around 300 words.
                 - Original nursery rhyme.
                 - Exactly 10 scenes.
@@ -40,9 +40,9 @@ public class ContentPromptBuilder {
                 - No markdown.
                 - No explanation.
                 - Output JSON only.
-
+                
                 Topic:
-
+                
                 %s
                 """.formatted(topic);
 

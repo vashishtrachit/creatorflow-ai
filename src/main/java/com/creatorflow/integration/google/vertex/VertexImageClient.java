@@ -2,6 +2,7 @@ package com.creatorflow.integration.google.vertex;
 
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
+import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.protobuf.ByteString;
 import org.springframework.stereotype.Component;
@@ -20,26 +21,61 @@ public class VertexImageClient {
 
     public Path generateImage(String prompt) throws Exception {
 
-        GenerativeModel model =
-                new GenerativeModel(
-                        "gemini-2.5-flash-image",
-                        vertexAI
+        Exception lastException = null;
+
+        for (int attempt = 1; attempt <= 3; attempt++) {
+
+            try {
+
+                GenerativeModel model =
+                        new GenerativeModel(
+                                "gemini-2.5-flash-image",
+                                vertexAI
+                        );
+
+                GenerateContentResponse response =
+                        model.generateContent(prompt);
+
+                for (Part part : response.getCandidates(0)
+                        .getContent()
+                        .getPartsList()) {
+
+                    if (part.hasInlineData()) {
+
+                        ByteString imageBytes =
+                                part.getInlineData().getData();
+
+                        Path output =
+                                Files.createTempFile("scene-", ".png");
+
+                        Files.write(output, imageBytes.toByteArray());
+
+                        return output;
+                    }
+                }
+
+                throw new RuntimeException("No image returned.");
+
+            } catch (Exception ex) {
+
+                lastException = ex;
+
+                System.out.println(
+                        "Image generation failed. Attempt "
+                                + attempt + "/3"
                 );
 
-        GenerateContentResponse response =
-                model.generateContent(prompt);
+                if (attempt < 3) {
 
-        ByteString imageBytes =
-                response.getCandidates(0)
-                        .getContent()
-                        .getParts(1)
-                        .getInlineData()
-                        .getData();
+                    Thread.sleep(5000);
 
-        Path output = Files.createTempFile("scene-", ".png");
+                }
+            }
+        }
 
-        Files.write(output, imageBytes.toByteArray());
-
-        return output;
+        throw new RuntimeException(
+                "Image generation failed after 3 attempts.",
+                lastException
+        );
     }
 }

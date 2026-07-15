@@ -1,7 +1,9 @@
 package com.creatorflow.image.provider;
 
+import java.nio.file.Path;
+
 public interface ImageProvider {
 
-    String generateImage(String prompt);
+    Path generateImage(String prompt) throws Exception;
 
 }

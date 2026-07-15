@@ -6,7 +6,7 @@ import com.creatorflow.content.dto.HealthResponse;
 import com.creatorflow.content.model.Project;
 import com.creatorflow.content.service.ProjectService;
 import com.creatorflow.image.service.ImageService;
-import com.creatorflow.integration.google.vertex.VertexTextTest;
+import com.creatorflow.integration.google.vertex.VertexImageClient;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +18,13 @@ public class ContentController {
 
     private final ProjectService projectService;
     private final ImageService imageService;
-    private final VertexTextTest vertexTextTest;
+    private final VertexImageClient vertexImageClient;
 
-    public ContentController(ProjectService projectService,ImageService imageService,
-                             VertexTextTest vertexTextTest) {
+    public ContentController(ProjectService projectService, ImageService imageService,
+                             VertexImageClient vertexImageClient) {
         this.projectService = projectService;
-        this.imageService=imageService;
-        this.vertexTextTest=vertexTextTest;
+        this.imageService = imageService;
+        this.vertexImageClient = vertexImageClient;
     }
 
     @GetMapping("/health")
@@ -38,7 +38,7 @@ public class ContentController {
 
     @PostMapping("/projects")
     public CreateProjectResponse createProject(
-            @Valid @RequestBody CreateProjectRequest request) {
+            @Valid @RequestBody CreateProjectRequest request) throws Exception {
 
         return projectService.createProject(request);
     }
@@ -48,20 +48,4 @@ public class ContentController {
         return projectService.findAllProjects();
     }
 
-    @GetMapping("/image")
-    public String generateImage() {
-
-        return imageService.generateImage(
-                "A cute 3D Pixar-style baby mermaid with pink hair, purple tail, smiling, underwater coral reef, vibrant colors."
-        );
-
-    }
-
-    @GetMapping("/vertex-test")
-    public String vertexTest() throws Exception {
-
-        vertexTextTest.test();
-
-        return "Done";
-    }
 }

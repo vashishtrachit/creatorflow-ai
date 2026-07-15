@@ -9,10 +9,10 @@ import java.util.Map;
 public class HealthController {
 
     @GetMapping("/health")
-    public Map<String,String> health(){
+    public Map<String, String> health() {
         return Map.of(
-                "status","UP",
-                "application","CreatorFlow AI"
+                "status", "UP",
+                "application", "CreatorFlow AI"
         );
     }
 }

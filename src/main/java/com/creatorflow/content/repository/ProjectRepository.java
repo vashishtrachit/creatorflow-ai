@@ -11,15 +11,15 @@ import java.util.Map;
 public class ProjectRepository {
     private final Map<Long, Project> db = new HashMap<>();
 
-    public void save(Project project){
-        db.put(project.getId(),project);
+    public void save(Project project) {
+        db.put(project.getId(), project);
     }
 
-    public Project findById(Long id){
+    public Project findById(Long id) {
         return db.get(id);
     }
 
-    public Collection<Project> findAll(){
+    public Collection<Project> findAll() {
         return db.values();
     }
 }

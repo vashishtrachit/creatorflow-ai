@@ -1,20 +1,21 @@
 package com.creatorflow.image.provider;
 
-import com.creatorflow.image.client.GeminiImageClient;
-import com.creatorflow.image.provider.ImageProvider;
+import com.creatorflow.integration.google.vertex.VertexImageClient;
 import org.springframework.stereotype.Component;
+
+import java.nio.file.Path;
 
 @Component
 public class GeminiImageProvider implements ImageProvider {
 
-    private final GeminiImageClient client;
+    private final VertexImageClient client;
 
-    public GeminiImageProvider(GeminiImageClient client) {
+    public GeminiImageProvider(VertexImageClient client) {
         this.client = client;
     }
 
     @Override
-    public String generateImage(String prompt) {
+    public Path generateImage(String prompt) throws Exception {
         return client.generateImage(prompt);
     }
 }

@@ -3,6 +3,8 @@ package com.creatorflow.image.service;
 import com.creatorflow.image.provider.ImageProvider;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
+
 @Service
 public class ImageService {
 
@@ -12,7 +14,7 @@ public class ImageService {
         this.provider = provider;
     }
 
-    public String generateImage(String prompt) {
+    public Path generateImage(String prompt) throws Exception {
         return provider.generateImage(prompt);
     }
 }
