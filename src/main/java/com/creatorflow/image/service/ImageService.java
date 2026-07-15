@@ -14,7 +14,7 @@ public class ImageService {
         this.provider = provider;
     }
 
-    public Path generateImage(String prompt) throws Exception {
+    public byte[] generateImage(String prompt) throws Exception {
         return provider.generateImage(prompt);
     }
 }

@@ -7,6 +7,7 @@ import com.creatorflow.content.model.Project;
 import com.creatorflow.content.service.ProjectService;
 import com.creatorflow.image.service.ImageService;
 import com.creatorflow.integration.google.vertex.VertexImageClient;
+import com.creatorflow.storage.FileStorageService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ContentController {
     private final VertexImageClient vertexImageClient;
 
     public ContentController(ProjectService projectService, ImageService imageService,
-                             VertexImageClient vertexImageClient) {
+                             VertexImageClient vertexImageClient,FileStorageService fileStorageService) {
         this.projectService = projectService;
         this.imageService = imageService;
         this.vertexImageClient = vertexImageClient;

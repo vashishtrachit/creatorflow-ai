@@ -7,9 +7,6 @@ import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.protobuf.ByteString;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 @Component
 public class VertexImageClient {
 
@@ -19,7 +16,7 @@ public class VertexImageClient {
         this.vertexAI = vertexAI;
     }
 
-    public Path generateImage(String prompt) throws Exception {
+    public byte[] generateImage(String prompt) throws Exception {
 
         Exception lastException = null;
 
@@ -45,12 +42,7 @@ public class VertexImageClient {
                         ByteString imageBytes =
                                 part.getInlineData().getData();
 
-                        Path output =
-                                Files.createTempFile("scene-", ".png");
-
-                        Files.write(output, imageBytes.toByteArray());
-
-                        return output;
+                        return imageBytes.toByteArray();
                     }
                 }
 
@@ -66,9 +58,7 @@ public class VertexImageClient {
                 );
 
                 if (attempt < 3) {
-
                     Thread.sleep(5000);
-
                 }
             }
         }

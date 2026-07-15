@@ -8,9 +8,12 @@ import com.creatorflow.content.model.Project;
 import com.creatorflow.content.model.ProjectStatus;
 import com.creatorflow.content.repository.ProjectRepository;
 import com.creatorflow.image.service.ImageService;
+import com.creatorflow.storage.FileStorageService;
+import com.creatorflow.storage.dto.ProjectMetadata;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,14 +27,17 @@ public class ProjectService {
     private final ProjectRepository repository;
     private final AIService aiService;
     private final ImageService imageService;
+    private final FileStorageService fileStorageService;
 
     public ProjectService(ProjectRepository repository,
                           AIService aiService,
-                          ImageService imageService) {
+                          ImageService imageService,
+                          FileStorageService fileStorageService) {
 
         this.repository = repository;
         this.aiService = aiService;
         this.imageService = imageService;
+        this.fileStorageService=fileStorageService;
     }
 
     public CreateProjectResponse createProject(CreateProjectRequest request) throws Exception {
@@ -41,25 +47,54 @@ public class ProjectService {
         ContentPackageResponse content =
                 aiService.generateContent(request.topic());
 
-        List<Path> imagePaths = new ArrayList<>();
+        fileStorageService.createProjectFolder(id);
+
+        fileStorageService.saveStory(id, content);
+
+        fileStorageService.saveMetadata(
+
+                new ProjectMetadata(
+
+                        id,
+
+                        request.topic(),
+
+                        ProjectStatus.CREATED.name(),
+
+                        LocalDateTime.now()
+                )
+
+        );
 
         for (var scene : content.scenes()) {
-try{
-            Path imagePath =
-                    imageService.generateImage(
-                            scene.imagePrompt()
-                    );
 
-            imagePaths.add(imagePath);
-            Thread.sleep(2000);
-            System.out.println("Generated Image : " + imagePath);
-        } catch (Exception e) {
-    System.out.println(
-            "Skipping image generation for Scene "
-                    + scene.sceneNumber()
-    );
-}
-}
+            try {
+
+                byte[] image =
+                        imageService.generateImage(
+                                scene.imagePrompt()
+                        );
+
+                Path savedImage =
+                        fileStorageService.saveImage(
+                                id,
+                                scene.sceneNumber(),
+                                image
+                        );
+
+                System.out.println("Generated Image : " + savedImage);
+
+                Thread.sleep(2000);
+
+            } catch (Exception e) {
+
+                System.out.println(
+                        "Skipping image generation for Scene "
+                                + scene.sceneNumber()
+                );
+
+            }
+        }
 
         Project project = new Project(
                 id,
