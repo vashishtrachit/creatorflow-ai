@@ -1,3 +1,6 @@
 spring:
   application:
     name: creatorflow-ai
+
+storage:
+  root-folder: creatorflow-data

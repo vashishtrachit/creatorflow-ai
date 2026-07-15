@@ -85,4 +85,76 @@ public class FileStorageService {
                         metadata
                 );
     }
+
+    public Path saveAudio(Long projectId,
+                          int sceneNumber,
+                          byte[] audioBytes)
+            throws IOException {
+
+        Path audioFile = getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("audio")
+                .resolve("scene" + sceneNumber + ".mp3");
+
+        Files.write(audioFile, audioBytes);
+
+        return audioFile;
+    }
+
+    public Path getVideoFile(
+            Long projectId,
+            int sceneNumber) {
+
+        return getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("video")
+                .resolve("scene" + sceneNumber + ".mp4");
+    }
+    public ContentPackageResponse loadStory(Long projectId)
+            throws IOException {
+
+        Path storyFile = getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("story.json");
+
+        return objectMapper.readValue(
+                storyFile.toFile(),
+                ContentPackageResponse.class
+        );
+    }
+    public Path getImageFile(Long projectId,
+                             int sceneNumber) {
+
+        return getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("images")
+                .resolve("scene" + sceneNumber + ".png");
+    }
+    public Path getAudioFile(Long projectId,
+                             int sceneNumber) {
+
+        return getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("audio")
+                .resolve("scene" + sceneNumber + ".mp3");
+    }
+
+    public Path getVideoFolder(Long projectId) {
+
+        return getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("video");
+    }
+
+    public Path getFinalVideo(Long projectId) {
+
+        return getVideoFolder(projectId)
+                .resolve("final.mp4");
+    }
 }
