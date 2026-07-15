@@ -10,17 +10,20 @@ public class PipelineService {
     private final AudioGenerationService audioGenerationService;
     private final VideoGenerationService videoGenerationService;
     private final VideoMergeService videoMergeService;
+    private final AudioMixingService audioMixingService;
 
     public PipelineService(
             ImageGenerationService imageGenerationService,
             AudioGenerationService audioGenerationService,
             VideoGenerationService videoGenerationService,
-            VideoMergeService videoMergeService) {
+            VideoMergeService videoMergeService,
+            AudioMixingService audioMixingService) {
 
         this.imageGenerationService = imageGenerationService;
         this.audioGenerationService = audioGenerationService;
         this.videoGenerationService = videoGenerationService;
         this.videoMergeService=videoMergeService;
+        this.audioMixingService=audioMixingService;
     }
 
     public void execute(
@@ -39,11 +42,17 @@ public class PipelineService {
             case VIDEO ->
                     videoGenerationService.generate(projectId);
 
+            case AUDIO_MIX ->
+
+                    audioMixingService.generate(projectId);
+
             case ALL -> {
 
                 imageGenerationService.generate(projectId);
 
                 audioGenerationService.generate(projectId);
+
+                audioMixingService.generate(projectId);
 
                 videoGenerationService.generate(projectId);
 

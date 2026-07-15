@@ -59,7 +59,8 @@ public class ProjectService {
 
                         ProjectStatus.CREATED.name(),
 
-                        LocalDateTime.now()
+                        LocalDateTime.now(),
+                        "Happy.mp3"
                 )
 
         );

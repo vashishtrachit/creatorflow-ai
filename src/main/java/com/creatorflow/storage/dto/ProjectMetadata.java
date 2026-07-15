@@ -10,7 +10,9 @@ public record ProjectMetadata(
 
         String status,
 
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+
+        String backgroundMusic
 
 ) {
 }

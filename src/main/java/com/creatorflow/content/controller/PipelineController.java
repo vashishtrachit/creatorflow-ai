@@ -91,4 +91,19 @@ public class PipelineController {
                 "Pipeline completed."
         );
     }
+
+    @PostMapping("/{projectId}/pipeline/audio-mix")
+    public ResponseEntity<String> mixAudio(
+            @PathVariable Long projectId)
+            throws Exception {
+
+        pipelineService.execute(
+                projectId,
+                PipelineStage.AUDIO_MIX
+        );
+
+        return ResponseEntity.ok(
+                "Audio mixing completed."
+        );
+    }
 }

@@ -28,21 +28,25 @@ public class FfmpegClient {
 
                         "-loop", "1",
 
+                        "-framerate", "1",
+
                         "-i", image.toString(),
 
                         "-i", audio.toString(),
 
                         "-c:v", "libx264",
 
+                        "-preset", "veryfast",
+
                         "-tune", "stillimage",
 
                         "-c:a", "aac",
 
-                        "-b:a", "192k",
-
                         "-pix_fmt", "yuv420p",
 
                         "-shortest",
+
+                        "-movflags", "+faststart",
 
                         output.toString()
 

@@ -6,6 +6,7 @@ public enum PipelineStage {
     AUDIO,
     VIDEO,
     MERGE,
-    ALL
+    ALL,
+    AUDIO_MIX
 
 }

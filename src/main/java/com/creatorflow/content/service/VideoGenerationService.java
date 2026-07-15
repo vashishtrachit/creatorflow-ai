@@ -38,7 +38,7 @@ public class VideoGenerationService {
                         );
 
                 Path audio =
-                        fileStorageService.getAudioFile(
+                        fileStorageService.getMixedAudioFile(
                                 projectId,
                                 scene.sceneNumber()
                         );

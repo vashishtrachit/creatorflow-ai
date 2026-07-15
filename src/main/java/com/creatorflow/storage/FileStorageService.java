@@ -157,4 +157,48 @@ public class FileStorageService {
         return getVideoFolder(projectId)
                 .resolve("final.mp4");
     }
+
+    public ProjectMetadata loadMetadata(Long projectId)
+            throws IOException {
+
+        Path metadataFile = getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("metadata.json");
+
+        return objectMapper.readValue(
+                metadataFile.toFile(),
+                ProjectMetadata.class
+        );
+    }
+    public Path getMixedAudioFolder(Long projectId)
+            throws IOException {
+
+        Path folder = getRoot()
+                .resolve("projects")
+                .resolve(projectId.toString())
+                .resolve("audio")
+                .resolve("mixed");
+
+        Files.createDirectories(folder);
+
+        return folder;
+    }
+    public Path getMixedAudioFile(
+            Long projectId,
+            int sceneNumber)
+            throws IOException {
+
+        return getMixedAudioFolder(projectId)
+                .resolve("scene" + sceneNumber + ".mp3");
+    }
+    public Path getBackgroundMusic(String musicName)
+            throws Exception {
+
+        return Path.of("src")
+                .resolve("main")
+                .resolve("resources")
+                .resolve("music")
+                .resolve(musicName);
+    }
 }
